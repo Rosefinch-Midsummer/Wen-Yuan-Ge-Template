@@ -23,7 +23,10 @@ const searchQuery = ref('');
 // Fetch files on mount
 onMounted(async () => {
   try {
-    const res = await fetch('/files.json');
+    // Use import.meta.env.BASE_URL to handle base path correctly
+    const baseUrl = import.meta.env.BASE_URL;
+    const jsonPath = baseUrl.endsWith('/') ? `${baseUrl}files.json` : `${baseUrl}/files.json`;
+    const res = await fetch(jsonPath);
     rootFiles.value = await res.json();
   } catch (e) {
     console.error('Failed to load files:', e);

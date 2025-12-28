@@ -29,6 +29,13 @@ function handleClose() {
   currentView.value = 'explorer';
   currentFile.value = null;
 }
+
+function getPdfUrl(path: string) {
+  const baseUrl = import.meta.env.BASE_URL;
+  // If path starts with /, remove it to avoid double slashes if baseUrl has one
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return baseUrl.endsWith('/') ? `${baseUrl}${cleanPath}` : `${baseUrl}/${cleanPath}`;
+}
 </script>
 
 <template>
@@ -39,7 +46,7 @@ function handleClose() {
     />
     <PdfPreview 
       v-else-if="currentView === 'preview' && currentFile" 
-      :fileUrl="currentFile.path" 
+      :fileUrl="getPdfUrl(currentFile.path)" 
       :fileName="currentFile.name"
       @close="handleClose"
     />
